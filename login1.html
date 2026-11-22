@@ -8,26 +8,40 @@
     </head>
 
     <body>
-        <h2 id="clock">00:00</h2>
-        <form id="login-form" class="hidden">
-            <input required maxlength="15" type="text" placeholder="What is your name?"\>
-            <input type="submit" value="Log In"/>
-        </form>
-        <h1 id="greeting" class="hidden"></h1>
-        <form id="todo-form">
-            <input type="text" placeholder="Write a To do and Press Enter">
-        </form>
-        <ul id="todo-list">
+    <!-- 배경 사진: background.js가 이 안에 레이어 두 장을 만듭니다 -->
+        <div id="background-container" aria-hidden="true"></div>
 
-        </ul>
+        <!-- 인사말, 시계, 투두를 세로로 쌓는 가운데 영역 -->
+        <main id="center">
+            <form id="login-form" class="hidden">
+                <input required maxlength="15" type="text" placeholder="What is your name?" aria-label="name">
+                <input type="submit" value="Log In">
+            </form>
+            <h1 id="greeting" class="hidden"></h1>
+            <h2 id="clock">00:00:00</h2>
+            <form id="todo-form">
+                <input type="text" placeholder="Write a To do and Press Enter" aria-label="to do">
+            </form>
+            <ul id="todo-list"></ul>
+        </main>
+
+        <!-- 명언: quotes.js가 span 두 개(명언, 저자)를 채움 -->
         <div id="quote">
             <span></span>
             <span></span>
         </div>
+
+        <!-- 날씨: weather.js가 이모지, 툴팁 설명, 온도, 도시를 채움 -->
         <div id="weather">
-            <span></span>
-            <span></span>
+            <span class="weather-icon-wrap" data-description="Loading">
+                <span class="weather-icon">🌤️</span>
+            </span>
+            <span class="weather-copy">
+                <span class="weather-temperature">--°</span>
+                <span class="weather-city">Loading...</span>
+            </span>
         </div>
+
         <script src="js/config.js"></script>
         <script src="js/greetings.js"></script>
         <script src="js/clock.js"></script>
