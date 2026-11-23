@@ -24,7 +24,7 @@ const weatherCity = document.querySelector(".weather-city");
 
 // 실패했을 때 화면에 이유를 짧게 보여 줌 (에러로 멈추지 않게)
 function showWeatherMessage(message) {
-    weatherIcon.innerText = "—";
+    weatherIcon.innerText = "❓";
     weatherTemp.innerText = "--°";
     weatherCity.innerText = message;
     weatherIconWrap.dataset.description = message;
