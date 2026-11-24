@@ -106,6 +106,70 @@ body {
   animation: rise 800ms ease both;
 }
 
+/* ===== 날짜 이동: [ ‹ ]  2026-11-24  [ › ] ===== */
+
+/* 세 요소를 한 줄로 가로 배치하고 가운데 정렬 */
+#dateDiv {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+  margin: clamp(10px, 2vh, 20px) 0 10px;
+  animation: rise 850ms 60ms ease both;
+}
+
+/* 날짜 글씨: 은은한 회색빛. tabular-nums로 숫자 폭을 고정해 날짜가 바뀌어도 버튼이 흔들리지 않음 */
+#thisDate {
+  min-width: 9.5ch;               /* 글자 수가 달라져도 버튼 위치가 고정되게 최소 폭 확보 */
+  margin: 0;
+  color: rgba(226, 232, 236, 0.78);
+  font-size: 0.95rem;
+  font-weight: 300;
+  letter-spacing: 0.08em;
+  font-variant-numeric: tabular-nums;
+  text-align: center;
+  text-shadow: 0 2px 14px rgba(0, 0, 0, 0.35);
+}
+
+/* 화살표 버튼: 블러가 걸린 회색빛 유리 원 */
+.dateButton {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0 0 2px;               /* 아래 2px: 화살표 글자를 시각적으로 가운데로 */
+  color: rgba(214, 222, 227, 0.8); /* 푸른 기가 도는 연한 회색 */
+  font: inherit;
+  font-size: 1.15rem;
+  font-weight: 300;
+  line-height: 1;
+  border: 1px solid rgba(214, 222, 227, 0.22);
+  border-radius: 50%;
+  background: rgba(150, 162, 170, 0.14);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  cursor: pointer;
+  transition: color var(--ease), background var(--ease),
+              border-color var(--ease), transform var(--ease);
+}
+
+.dateButton:hover {
+  color: #ffffff;
+  border-color: rgba(184, 242, 223, 0.5);   /* 기존 포인트 컬러(청록)를 살짝만 */
+  background: rgba(150, 162, 170, 0.26);
+  transform: scale(1.08);
+}
+
+.dateButton:active {
+  transform: scale(0.95);
+}
+
+/* 키보드(Tab)로 이동했을 때만 보이는 포커스 링 */
+.dateButton:focus-visible {
+  outline: 2px solid rgba(184, 242, 223, 0.7);
+  outline-offset: 2px;
+}
+
 /* 시계: 크고 얇게. tabular-nums로 숫자 폭을 고정해 매초 흔들리지 않음 */
 #clock {
   margin: 0 0 clamp(20px, 4vh, 40px);
@@ -413,6 +477,15 @@ input::placeholder {
   #clock {
     font-size: clamp(3rem, 18vw, 5.5rem);
   }
+
+  #dateDiv {
+    gap: 10px;
+  }
+
+  .dateButton {
+    width: 38px;
+    height: 38px;
+  }
 }
 
 /* 시스템에서 '동작 줄이기'를 켠 사용자를 위해 애니메이션 최소화 */
@@ -424,3 +497,5 @@ input::placeholder {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* 모바일에서 터치하기 쉽게 살짝 키움 */
