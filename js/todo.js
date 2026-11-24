@@ -2,20 +2,27 @@ const todoForm = document.querySelector("#todo-form");
 const todoInput = todoForm.querySelector("#todo-form input");
 const todoList = document.querySelector("#todo-list");
 
-const TODOS_KEY = "todos";
-const FINISH_KEY = "finishTodos";
+const today = new Date();
+const TODOS_KEY = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}ingTodos`;
+const FINISH_KEY = `${today.getFullYear()}${String(today.getMonth()+1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}finishTodos`;
+const FLAGDATE_KEY="flagdate"
 
 let toDos=[];
 let finishToDos=[];
 //save된것들이 버튼에 눌리면 finishtoDos로 이동해서 별도 저장해주기 (완료)
 //그 다음에 finishTodos 로딩때 스타일 설정해주기(완료)
 
-function saveTodos(){
-    localStorage.setItem(TODOS_KEY, JSON.stringify(toDos));
-    localStorage.setItem(FINISH_KEY, JSON.stringify(finishToDos));
+function resetDate(){
+    localStorage.setItem(FLAGDATE_KEY, `${today.getFullYear()}${String(today.getMonth()+1).padStart(2, "0")}${String(today.getDate()).padStart(2, "0")}`);
 }
 
-function clearTodo(event){
+function saveTodos(){
+    const viewDate = localStorage.getItem(FLAGDATE_KEY);
+    localStorage.setItem(`${viewDate}ingTodos`, JSON.stringify(toDos));
+    localStorage.setItem(`${viewDate}finishTodos`, JSON.stringify(finishToDos));
+}
+
+function finishCheckTodo(event){
     const li = event.target.closest("li");
     const targetSpan = li.querySelector("span");
     targetSpan.classList.add("clearTodo");
@@ -54,7 +61,7 @@ function paintTodo(newTodo, flag=false){
     
     firstButton.innerText = "✅"; //clear -> 완료처리용 버튼
     secondButton.innerText = "❌"; //delete -> 삭제처리용 버튼
-    firstButton.addEventListener("click", clearTodo);
+    firstButton.addEventListener("click", finishCheckTodo);
     secondButton.addEventListener("click", deleteTodo);
     li.appendChild(span);
     buttonDiv.appendChild(firstButton);
@@ -78,17 +85,22 @@ function handleTodoSubmit(event){
 
 todoForm.addEventListener("submit", handleTodoSubmit);
 
-const savedToDos = localStorage.getItem(TODOS_KEY);
-const finishedToDos = localStorage.getItem(FINISH_KEY);
+function loadingToDos(){
+    const savedToDos = localStorage.getItem(TODOS_KEY);
+    const finishedToDos = localStorage.getItem(FINISH_KEY);
 
 
-if(savedToDos){
-    const parsedToDos = JSON.parse(savedToDos);
-    toDos = parsedToDos;
-    parsedToDos.forEach(paintTodo);
+    if(savedToDos){
+        const parsedToDos = JSON.parse(savedToDos);
+        toDos = parsedToDos;
+        parsedToDos.forEach(paintTodo);
+    }
+    if(finishedToDos){
+        const parsedToDos = JSON.parse(finishedToDos);
+        finishToDos = parsedToDos;
+        parsedToDos.forEach((item) => paintTodo(item, true));
+    }
 }
-if(finishedToDos){
-    const parsedToDos = JSON.parse(finishedToDos);
-    finishToDos = parsedToDos;
-    parsedToDos.forEach((item) => paintTodo(item, true));
-}
+
+resetDate();
+loadingToDos();
